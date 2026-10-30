@@ -25,16 +25,18 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.9'
+          gradle-version: '8.11.1'
       - name: Accept Android SDK licenses and install packages
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "platform-tools" "platforms;android-36" "build-tools;36.0.0"
       - name: Build APK
-        run: gradle assembleDebug
+        run: gradle assembleDebug bundleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: QuickEats-Rider-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: QuickEats-Rider-Debug-Builds
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/bundle/debug/app-debug.aab
           if-no-files-found: error
